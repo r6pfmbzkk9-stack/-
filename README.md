@@ -19,13 +19,10 @@
 
 ---
 
-## 🎯 نظرة عامة
-
 توقف آلة واحدة في خط الإنتاج قد يكلف وقتاً ومالاً كبيرين. بدلاً من الانتظار حتى يحدث العطل (صيانة تصحيحية) أو الصيانة بجدول ثابت (صيانة وقائية)، يستخدم هذا المشروع **قراءات الحساسات** (الحرارة، سرعة الدوران، عزم الدوران، تآكل الأداة) لتدريب نماذج تعلّم آلي تتنبأ **هل ستتعطل الآلة أم لا**.
 
 يقارن المشروع **5 خوارزميات** تصنيف، ويقيّمها بمقاييس متعددة، ويفحص قدرة النموذج الأفضل على التعميم بالتحقق المتقاطع (5-Fold CV) ومجموعة تحقق مستقلة.
 
-## 🎯 Overview
 
 An unplanned machine stop is expensive. Instead of reacting after a failure or servicing on a fixed calendar, this project learns from **sensor readings** (temperatures, rotational speed, torque, tool wear) to predict **whether a machine is about to fail**.
 
@@ -41,7 +38,7 @@ It benchmarks **5 classifiers**, evaluates them on several metrics, and checks t
 
 ---
 
-## 🧠 خريطة المشروع | Project Mind-Map
+Project Mind-Map
 
 ```mermaid
 mindmap
@@ -73,8 +70,7 @@ mindmap
 ```
 
 ---
-
-## 🔄 مسار العمل | Workflow
+ Workflow
 
 <div align="center">
 <img src="pipeline.svg" alt="Project pipeline" width="100%"/>
@@ -98,8 +94,7 @@ flowchart LR
 ```
 
 ---
-
-## 📦 البيانات | Dataset
+| Dataset
 
 مجموعة بيانات صيانة تنبؤية من **10,000 سجل** و**10 أعمدة**، كل سجل يمثل آلة بقراءات حساساتها وحالة العطل.
 A predictive-maintenance dataset of **10,000 records** and **10 columns**; each row is a machine with its sensor readings and failure status.
@@ -120,26 +115,10 @@ A predictive-maintenance dataset of **10,000 records** and **10 columns**; each 
 | `UDI`, `Product ID` | الرقم التسلسلي، معرف المنتج | Dropped (identifiers) |
 | `Failure Type` | نوع العطل | Dropped (it reveals the label, so keeping it would leak the answer) |
 
-### ⚖️ معالجة عدم التوازن | Handling class imbalance
 
 الأعطال نادرة (**339 فقط = 3.39%**). لذلك أُبقيت **كل** سجلات الأعطال وسُحبت عينة عشوائية من **1,200** سجل سليم، فارتفعت نسبة الأعطال إلى نحو **22%** لتتعلم النماذج أنماطها.
 Failures are rare (**339 = 3.39%**). All failure rows are kept and **1,200** normal rows are sampled, raising the failure share to about **22%** so models can learn failure patterns.
 
-<div align="center">
-<img src="funnel.svg" alt="Data funnel" width="90%"/>
-</div>
-
-```mermaid
-pie showData title Data split · تقسيم البيانات (1,539 records)
-    "Training 70%" : 1077
-    "Test 20%" : 308
-    "Validation 10%" : 154
-```
-
-> التقسيم **طبقي (stratified)**: كل جزء يحتفظ بنفس نسبة الأعطال تقريباً. والـ `StandardScaler` يُضبط على بيانات التدريب فقط ثم يُطبّق على الاختبار والتحقق لمنع تسرب المعلومات.
-> The split is **stratified**, and the `StandardScaler` is fitted on training data only, then applied to test/validation to avoid data leakage.
-
----
 
 ## 🤖 النماذج | Models
 
@@ -155,7 +134,7 @@ pie showData title Data split · تقسيم البيانات (1,539 records)
 
 ---
 
-## 📊 النتائج | Results
+Results
 
 <div align="center">
 <img src="model%20comparison.svg" alt="Model comparison" width="90%"/>
@@ -177,7 +156,7 @@ pie showData title Data split · تقسيم البيانات (1,539 records)
 
 In predictive maintenance, **missing a real failure costs far more than a false alarm**. SVM has the best overall accuracy, but Random Forest has the best **failure recall (0.93)**, catching roughly **63 of the 68** failures in the test set, so it was selected as the final model.
 
-### ✅ التحقق النهائي | Final validation
+ Final validation
 
 <div align="center">
 <img src="generalization.svg" alt="Generalization check" width="90%"/>
@@ -189,16 +168,11 @@ In predictive maintenance, **missing a real failure costs far more than a false 
 | Test set | 0.9253 | 0.9275 |
 | Validation set (154 records) | 0.9286 | 0.9289 |
 | 5-Fold CV (mean ± std) | 0.9350 ± 0.0214 | n/a |
-
-> **ملاحظة صريحة:** الفارق بين التدريب (98.5%) والاختبار (92.5%) نحو **6 نقاط**، أي وجود **فرط ملاءمة معتدل**. هو مضبوط بتحديد عمق الأشجار (`max_depth=8`)، ونتائج التحقق والـ CV قريبة من الاختبار، فالنموذج مستقر على بيانات جديدة.
-> **Honest note:** the train/test gap is about **6 points**, so there is **moderate overfitting**. It is limited by depth constraints, and validation and CV scores stay close to the test score, so the model behaves consistently on unseen data.
+.
+tly on unseen data.
 
 ---
 
-## 🏭 تصور للتطبيق العملي | Proposed Deployment Flow
-
-> هذا تصور مقترح للتوسع المستقبلي، وهو غير منفّذ في الـ notebook الحالي.
-> A proposed future extension; it is not implemented in the current notebook.
 
 ```mermaid
 flowchart TD
@@ -231,8 +205,6 @@ stateDiagram-v2
 
 ---
 
-## 🚀 التشغيل السريع | Quick Start
-
 ```bash
 # 1) Clone
 git clone https://github.com/r6pfmbzkk9-stack/-.git predictive-maintenance
@@ -247,54 +219,3 @@ pip install -r requirements.txt
 # 4) Open the notebook
 jupyter notebook
 ```
-
-⚠️ **مهم قبل التشغيل | Before you run:** في الخلية الثانية غيّر مسار الملف إلى مسار نسبي.
-In the second cell, change the file path to a relative one:
-
-```python
-file_path = 'predictive_maintenance.csv'
-```
-
-### 📁 هيكل المشروع | Structure
-
-```text
-.
-├── README.md
-├── requirements.txt
-├── الصيانة التنوية للالات.ipynb     # main notebook · الدفتر الرئيسي
-├── predictive_maintenance.csv       # add locally · أضفه محلياً
-├── banner.svg                       # README illustrations · رسومات الشرح
-├── pipeline.svg
-├── funnel.svg
-├── feature map.svg
-├── model comparison.svg
-└── generalization.svg
-```
-
----
-
-## 🔭 التطوير المستقبلي | Roadmap
-
-- [ ] Hyper-parameter tuning with `GridSearchCV` / `RandomizedSearchCV`
-- [ ] Handle imbalance with `class_weight` or SMOTE instead of manual sampling
-- [ ] Add ROC-AUC and Precision-Recall curves
-- [ ] Feature importance and SHAP explanations
-- [ ] Multi-class prediction of the failure type (`Failure Type`)
-- [ ] Save the scaler and model with `joblib`, then serve them through a small API or dashboard
-
-## ⚠️ حدود المشروع | Limitations
-
-- **العينة:** العينة المُعاد أخذها (1,539) أصغر بكثير من البيانات الأصلية ونسبة الأعطال فيها (~22%) أعلى من الواقع (3.39%)، فقد لا تنتقل المقاييس كما هي إلى الإنتاج.
-  **Sample:** the resampled set (1,539) is much smaller than the raw data and has a higher failure share (~22%) than reality (3.39%), so metrics may not transfer directly to production.
-- **التحقق:** مجموعة التحقق صغيرة (154 سجل)، فتقديرها عرضة للتذبذب.
-  **Validation:** the validation set is small (154 records), so its estimate is noisy.
-
----
-
-<div align="center">
-
-**صُنع بشغف لعالم الصيانة الذكية · Built with ❤️ for smarter maintenance**
-
-⭐ إذا أعجبك المشروع، لا تنسَ نجمة · Star the repo if you like it
-
-</div>
