@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/banner.svg" alt="Predictive Maintenance | الصيانة التنبؤية للآلات" width="100%"/>
+<img src="banner.svg" alt="Predictive Maintenance | الصيانة التنبؤية للآلات" width="100%"/>
 
 <br/>
 
@@ -25,7 +25,7 @@
 
 يقارن المشروع **5 خوارزميات** تصنيف، ويقيّمها بمقاييس متعددة، ويفحص قدرة النموذج الأفضل على التعميم بالتحقق المتقاطع (5-Fold CV) ومجموعة تحقق مستقلة.
 
-##  Overview
+## 🎯 Overview
 
 An unplanned machine stop is expensive. Instead of reacting after a failure or servicing on a fixed calendar, this project learns from **sensor readings** (temperatures, rotational speed, torque, tool wear) to predict **whether a machine is about to fail**.
 
@@ -77,7 +77,7 @@ mindmap
 ## 🔄 مسار العمل | Workflow
 
 <div align="center">
-<img src="assets/pipeline.svg" alt="Project pipeline" width="100%"/>
+<img src="pipeline.svg" alt="Project pipeline" width="100%"/>
 </div>
 
 ```mermaid
@@ -105,7 +105,7 @@ flowchart LR
 A predictive-maintenance dataset of **10,000 records** and **10 columns**; each row is a machine with its sensor readings and failure status.
 
 <div align="center">
-<img src="assets/feature_map.svg" alt="Feature map" width="90%"/>
+<img src="feature%20map.svg" alt="Feature map" width="90%"/>
 </div>
 
 | Column | العمود | Role / الدور |
@@ -126,7 +126,7 @@ A predictive-maintenance dataset of **10,000 records** and **10 columns**; each 
 Failures are rare (**339 = 3.39%**). All failure rows are kept and **1,200** normal rows are sampled, raising the failure share to about **22%** so models can learn failure patterns.
 
 <div align="center">
-<img src="assets/funnel.svg" alt="Data funnel" width="90%"/>
+<img src="funnel.svg" alt="Data funnel" width="90%"/>
 </div>
 
 ```mermaid
@@ -158,7 +158,7 @@ pie showData title Data split · تقسيم البيانات (1,539 records)
 ## 📊 النتائج | Results
 
 <div align="center">
-<img src="assets/model_comparison.svg" alt="Model comparison" width="90%"/>
+<img src="model%20comparison.svg" alt="Model comparison" width="90%"/>
 </div>
 
 ### جدول المقارنة (بيانات الاختبار · 308 سجل) | Test-set comparison
@@ -180,7 +180,7 @@ In predictive maintenance, **missing a real failure costs far more than a false 
 ### ✅ التحقق النهائي | Final validation
 
 <div align="center">
-<img src="assets/generalization.svg" alt="Generalization check" width="90%"/>
+<img src="generalization.svg" alt="Generalization check" width="90%"/>
 </div>
 
 | Check | Accuracy | F1 |
@@ -242,7 +242,7 @@ cd predictive-maintenance
 pip install -r requirements.txt
 
 # 3) Add the dataset (not included in the repo)
-mkdir data   # then place predictive_maintenance.csv inside it
+#    place predictive_maintenance.csv next to the notebook
 
 # 4) Open the notebook
 jupyter notebook
@@ -252,7 +252,7 @@ jupyter notebook
 In the second cell, change the file path to a relative one:
 
 ```python
-file_path = 'data/predictive_maintenance.csv'
+file_path = 'predictive_maintenance.csv'
 ```
 
 ### 📁 هيكل المشروع | Structure
@@ -262,15 +262,13 @@ file_path = 'data/predictive_maintenance.csv'
 ├── README.md
 ├── requirements.txt
 ├── الصيانة التنوية للالات.ipynb     # main notebook · الدفتر الرئيسي
-├── data/
-│   └── predictive_maintenance.csv   # add locally · أضفه محلياً
-└── assets/                          # README illustrations · رسومات الشرح
-    ├── banner.svg
-    ├── pipeline.svg
-    ├── funnel.svg
-    ├── feature_map.svg
-    ├── model_comparison.svg
-    └── generalization.svg
+├── predictive_maintenance.csv       # add locally · أضفه محلياً
+├── banner.svg                       # README illustrations · رسومات الشرح
+├── pipeline.svg
+├── funnel.svg
+├── feature map.svg
+├── model comparison.svg
+└── generalization.svg
 ```
 
 ---
